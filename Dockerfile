@@ -1,15 +1,29 @@
-FROM ubuntu:trusty
+FROM node:8-alpine
 
-RUN apt-get update \
-	&& apt-get install -y wget libjpeg8 fontconfig libxrender1 xfonts-base xfonts-75dpi gsfonts fonts-ubuntu-font-family-console \
-	&& apt-get clean
+RUN apk add --update --no-cache \
+            xvfb \
+            ttf-freefont \
+            fontconfig \
+            dbus \
+            libgcc \
+            libstdc++ \
+            libx11 \
+            glib \
+            libxrender \
+            libxext \
+            libintl \
+            libcrypto1.0 \
+            libssl1.0 \
+            ttf-dejavu \
+            ttf-droid \
+            ttf-freefont \
+            ttf-liberation \
+            ttf-ubuntu-font-family
 
-RUN wget -O - https://deb.nodesource.com/setup_8.x | bash \
-	&& apt-get install -y nodejs
-
-WORKDIR /app/html2pdf
 
 COPY wkhtmltopdf /usr/bin/wkhtmltopdf
+ENV PATH "$PATH:/usr/bin/wkhtmltopdf"
+
 COPY index.js .
 
 EXPOSE 8000
